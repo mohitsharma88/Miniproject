@@ -1,0 +1,58 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- jquery validation -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">State Display Record<small></small></h3>
+                        </div>
+                        <body>
+                            <table border='1'>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>State Name</th>
+                                    <th>Action</th>
+                                    {{!-- <th>Action</th> --}}
+                                </tr>
+                                {{#each state_array}}
+                                {{!-- {{data.name}} --}}
+                                <tr>
+                                    <td> {{_id}}</td>
+                                    <td>{{s_name}}</td>
+                                    {{!-- <td>{{password}}</td> --}}
+                                    {{!-- <td><img src="/images/{{file}}" style="width: 100px;"></td> --}}
+                                    <td> <a href="/admin/state/edit/{{_id }}">Edit</a>
+                                        <a href="/admin/state/delete/{{ _id }}">Delete</a>
+                                        {{!-- <a href="/show/{{ _id }}">Show</a> --}}
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </table>
+                        </body>
+
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+                <!-- right column -->
+                <div class="col-md-6">
+
+                </div>
+                <!--/.col (right) -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
