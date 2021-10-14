@@ -364,7 +364,7 @@ SignupModel.findOne({"email" : myemail}, function(err, db_admin_array){
 
 router.get('/logout',function(req, res, next){
 
-  res.redirect('/admin/account/login');
+  res.redirect('/account/login');
   req.session.destroy();
 
 })

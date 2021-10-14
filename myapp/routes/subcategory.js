@@ -125,19 +125,19 @@ router.get('/edit/:id', function(req, res) {
       if (err) {
           console.log("Edit Fetch Error " + err);
       } else {
-          console.log(db_subcategory_array);
+        CategoryModel.find({},function(err , db_category_array){
+          if(err){
+            console.log(err);
+          }else{
+            console.log(db_subcategory_array);
 
-          res.render('subcategory/edit', { subcategory_array: db_subcategory_array });
+            res.render('subcategory/edit', {subcategory_array: db_subcategory_array,category_array : db_category_array});
+        
+          }
+        })
       }
   });
 });
-
-
-
-
-
-
-
 
 //Update Record Using Post Method
 router.post('/edit/:id', function(req, res) {
@@ -149,13 +149,13 @@ router.post('/edit/:id', function(req, res) {
     _category: req.body._category
   }
 
-  SubCategoryModel.findByIdAndUpdate(req.params.id, mybodydata, function(err,data) {
+  SubCategoryModel.findByIdAndUpdate(req.params.id, mybodydata, function(err,db_subcategory_array) {
       if (err) {
           console.log("Error in Record Update");
-        //   res.redirect('/subcategory/display');
+        //   res.redirect('/subcategory/display');zz
       } else {
-        console.log("Successfully edit"+data)
-          res.redirect('/admin/subcategory/displaysubcategory');
+        console.log("Successfully edit"+db_subcategory_array)
+          res.redirect('/subcategory/displaysubcategory',{mydata : db_subcategory_array});
       }
   });
 });
