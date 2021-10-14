@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var myschema = new Schema({
     user_name : String,
+    user_gender : String,
     user_email : String,
     user_password : String,
     user_mobile : Number,

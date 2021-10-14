@@ -18,7 +18,7 @@ router.get('/userdetails', function(req, res, next) {
         //Print Data in Console
         console.log(db_area_array);
         //Render User Array in HTML Table
-        res.render('admin/account/userdetails', { mydata : db_area_array });
+        res.render('admin/user/userdetails', { mydata : db_area_array });
         
       }
   });
@@ -30,13 +30,14 @@ router.post('/userdetails', function(req, res, next) {
   var myfile = req.files.u_file;
     var myfilename = req.files.u_file.name;
     
-    myfile.mv('public/user-photo/'+myfilename, function(err) {
+    myfile.mv('public/userphoto/'+myfilename, function(err) {
     if (err)
     throw err;
     //res.send('File uploaded!');
     });
   const mybodydata = {
-    user_name : req.body.user_name,
+    user_name : req.body.u_name,
+    user_gender : req.body.gender,
     user_email : req.body.email,
     user_password : req.body.password,
     user_mobile : req.body.u_mo,
@@ -52,7 +53,7 @@ router.post('/userdetails', function(req, res, next) {
       console.log("Error in Insert");
     }else{
       console.log("Record Added");
-      res.redirect('/admin/account/userdetails');
+      res.redirect('/admin/user/userdetails');
     }
   })
 
@@ -69,7 +70,27 @@ router.post('/userdetails', function(req, res, next) {
 //     }
 //   }).lean;
 // });
+router.get('/userdisplay', function(req, res, next) {
+  UserModel.find(function (err, db_user_array) {
+    // var myfile = req.files.file;
+    // var myfilename = req.files.file.name;
 
+    // myfile.mv('public/adminphoto/'+myfilename, function(err) {
+    //     if (err)
+    //     throw err;
+    //     //res.send('File uploaded!');
+    //     });
+      if (err) {
+        console.log("Error in Fetch Data " + err);
+      } else {
+        //Print Data in Console
+        console.log(db_user_array);
+        //Render User Array in HTML Table
+        res.render('admin/user/admindisplay', { mydata: db_user_array });
+  
+      }
+    }).lean();
+});
 // router.get('/delete/:id',function(req,res,next){
 //   var deleteid = req.params.id;
 //   UserModel.findOneAndDelete(deleteid,function(err,data){
