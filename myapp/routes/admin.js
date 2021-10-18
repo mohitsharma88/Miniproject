@@ -36,12 +36,11 @@ router.post('/signup', function(req, res, next) {
         console.log("Error in Add Record" + err);
       }else{
         console.log("Record Added");
-        res.send("Record Successfully Added")
+        res.redirect('/admin/signup');
       }
     })
   
   });
-
 
 
 router.get('/login', function(req, res, next) {
@@ -180,14 +179,7 @@ main().catch(console.error);
 
 router.get('/admindisplay', function(req, res, next) {
     SignupModel.find(function (err, data) {
-      // var myfile = req.files.file;
-      // var myfilename = req.files.file.name;
-  
-      // myfile.mv('public/adminphoto/'+myfilename, function(err) {
-      //     if (err)
-      //     throw err;
-      //     //res.send('File uploaded!');
-      //     });
+      
         if (err) {
           console.log("Error in Fetch Data " + err);
         } else {
@@ -200,105 +192,60 @@ router.get('/admindisplay', function(req, res, next) {
       }).lean();
   });
 
-  // router.get('/userdetails', function(req, res, next) {
-  //   res.render('admin/account/userdetails');
-  // });
-  
-  // router.post('/userdetails', function(req, res, next) {
-  //   const mybodydata = {
-  //     user_name : req.body.user_name,
-  //     user_email : req.body.email,
-  //     user_password : req.body.password,
-  //     user_mobile : req.body.u_mo,
-  //     user_address : req.body.u_add,
-  //     user_file : req.body.u_file
-  
-  //   }
-    
-  //   var data = UserModel(mybodydata);
-  
-  //   data.save(function(err){
-  //     if(err){
-  //       console.log("Error in Insert");
-  //     }else{
-  //       console.log("Record Added");
-  //       res.redirect('/admin/account/userdetails');
-  //     }
-  //   })
-  
-  // });
-  
-
-// //Get Single User for Edit Record
-// router.get('/edit/:id', function (req, res) {
-
-//   console.log(req.params.id);
-
-//   SignuptModel.findById(req.params.id, function (err,  db_signup_array) {
-//     if (err) {
-//       console.log("Edit Fetch Error " + err);
-//     } else {
-//       console.log( db_signup_array);
-
-//       res.render('edit-admin', { product_array: db_products_array });
-//     }
-//   });
-// });
-
-// //Update Record Using Post Method
-// router.post('/edit-product/:id', function (req, res) {
-
-//   console.log("Edit ID is" + req.params.id);
-
-//   const mybodydata1 = {
-//     p_name : req.body.p_name,
-//     p_details : req.body.p_details,
-//     p_price : req.body.p_price,
-//     p_img : req.body.p_img,
-//     p_qty : req.body.p_qty
-//   }
-
-//   ProductModel.findByIdAndUpdate(req.params.id, mybodydata1, function (err) {
-//     if (err) {
-//       console.log("Error in Record Update");
-//       res.redirect('/display-product');
-//     } else {
-
-//       res.redirect('/display-product');
-//     }
-//   });
-// });
-
-//Get Single User By ID
-router.get('/show/:id', function (req, res) {
-  console.log(req.params.id);
-  SignuptModel.findById(req.params.id, function (err,  db_signup_array) {
+ //Delete User By ID
+ router.get('/delete-record/:id', function (req, res, next) {
+  SignupModel.findByIdAndDelete(req.params.id, function (err, data) {
     if (err) {
-      console.log("Error in Single Record Fetch" + err);
+      console.log("Error in Record Delete " + err);
+      res.redirect('/admin/admindisplay');
+    } else {
+      console.log(" Record Deleted "+data);
+      res.redirect('/admin/admindisplay');
+    }
+  });
+});
+  
+
+//Get Single User for Edit Record
+router.get('/editadmin/:id', function (req, res) {
+
+  console.log(req.params.id);
+
+  SignupModel.findById(req.params.id, function (err,  db_signup_array) {
+    if (err) {
+      console.log("Edit Fetch Error " + err);
     } else {
       console.log( db_signup_array);
 
-      res.render('admin/account/single-record', { data:  db_signup_array });
+      res.render('admin/account/editadmin', { signup_array: db_signup_array });
     }
   });
 });
 
+//Update Record Using Post Method
+router.post('/editadmin/:id', function (req, res) {
 
+  console.log("Edit ID is" + req.params.id);
 
-  //Delete User By ID
-  router.get('/delete-record/:id', function (req, res) {
-  SignupModel.findOneAndDelete(req.params.id, function (err, project) {
+  const mybodydata = {
+    email : req.body.email,
+    password : req.body.password,
+    file:req.body.file
+    
+  }
+
+  SignupModel.findByIdAndUpdate(req.params.id, mybodydata, function (err) {
     if (err) {
-
-      console.log("Error in Record Delete " + err);
-      res.redirect('/admin/account//admindisplay');
+      console.log("Error in Record Update");
+      res.redirect('/admin/admindisplay');
     } else {
 
-      console.log(" Record Deleted ");
-      res.redirect('/admin/account//admindisplay');
+      res.redirect('/admin/admindisplay');
     }
   });
 });
+
+  
 
 //change password
 router.get('/changepass', function(req, res, next) {

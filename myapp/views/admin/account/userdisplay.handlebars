@@ -2,18 +2,8 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
-            {{!-- <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Login</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Login</li>
-                    </ol>
-                </div>
-            </div> --}}
-        </div><!-- /.container-fluid -->
+
+        </div>
     </section>
 
     <!-- Main content -->
@@ -27,6 +17,7 @@
                         <div class="card-header">
                             <h3 class="card-title">User Display Record<small></small></h3>
                         </div>
+
                         <body>
                             <table border='1'>
                                 <tr>
@@ -37,10 +28,11 @@
                                     <th>Password</th>
                                     <th>Mobile</th>
                                     <th>Adress</th>
-                                    {{!-- <th>Action</th> --}}
+                                    <th>User Photo</th>
+                                    <th>Action</th>
+
                                 </tr>
                                 {{#each mydata}}
-                                {{!-- {{data.name}} --}}
                                 <tr>
                                     <td> {{_id}}</td>
                                     <td>{{user_name}}</td>
@@ -49,10 +41,9 @@
                                     <td>{{user_password}}</td>
                                     <td>{{user_mobile}}</td>
                                     <td>{{user_address}}</td>
-                                    <td><img src="/adminphoto/{{user_file}}" style="width: 100px;"></td>
-                                    {{!-- <td> <a href="/edit/{{_id }}">Edit</a>
-                                        <a href="/delete-record/{{ _id }}">Delete</a>
-                                        <a href="/show/{{ _id }}">Show</a> --}}
+                                    <td><img src="/userphoto/{{user_file}}" style="width: 100px;"></td>
+                                    <td> <a href="/admin/user/useredit/{{_id }}">Edit</a>
+                                        <a href="/admin/user/delete-record/{{ _id }}">Delete</a>
                                     </td>
                                 </tr>
                                 {{/each}}
@@ -60,17 +51,15 @@
                         </body>
 
                     </div>
-                    <!-- /.card -->
+
                 </div>
-                <!--/.col (left) -->
-                <!-- right column -->
+
                 <div class="col-md-6">
 
                 </div>
-                <!--/.col (right) -->
+
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
+
 </div>

@@ -53,7 +53,7 @@ app.use(fileUpload());
 
 app.use(session({ secret: 'keyboard cat', cookie: { maxAge:
   60000 }}))
-
+  
 //Db Connection Start 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://adminpart:adminpart@localhost:27017/adminpart')

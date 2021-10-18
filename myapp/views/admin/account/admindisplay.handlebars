@@ -2,18 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
-            {{!-- <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Login</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Login</li>
-                    </ol>
-                </div>
-            </div> --}}
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
 
     <!-- Main content -->
@@ -34,7 +23,7 @@
                                     <th>Email</th>
                                     <th>Password</th>
                                     <th>Admin Image</th>
-                                    {{!-- <th>Action</th> --}}
+                                    <th>Action</th>
                                 </tr>
                                 {{#each data}}
                                 {{!-- {{data.name}} --}}
@@ -43,9 +32,8 @@
                                     <td>{{email}}</td>
                                     <td>{{password}}</td>
                                     <td><img src="/adminphoto/{{file}}" style="width: 100px;"></td>
-                                    {{!-- <td> <a href="/edit/{{_id }}">Edit</a>
-                                        <a href="/delete-record/{{ _id }}">Delete</a>
-                                        <a href="/show/{{ _id }}">Show</a> --}}
+                                    <td> <a href="/admin/editadmin/{{_id }}">Edit</a>
+                                        <a href="/admin/delete-record/{{ _id }}">Delete</a>
                                     </td>
                                 </tr>
                                 {{/each}}
@@ -55,15 +43,14 @@
                     </div>
                     <!-- /.card -->
                 </div>
-                <!--/.col (left) -->
-                <!-- right column -->
+                
                 <div class="col-md-6">
 
                 </div>
-                <!--/.col (right) -->
+                
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+            
+        </div>
     </section>
-    <!-- /.content -->
+    
 </div>
