@@ -25,37 +25,37 @@
             <!-- jquery validation -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Add Product <small></small></h3>
+                <h3 class="card-title">Edit Product <small></small></h3>
               </div>
-              <!-- /.card-header -->
+           <!-- /.card-header -->
               <!-- form start -->
-              <form action="addproduct"  method="POST" enctype="multipart/form-data">
+              <form method="POST" enctype="multipart/form-data">
                 <div class="card-body">
                   <div class="form-group">
                     <label>Product Name</label>
-                    <input type="text" name="addproduct" class="form-control" id="" placeholder="Enter Product name">
+                    <input type="text" name="addproduct" class="form-control" id="" placeholder="Enter Product name" value="{{product_array.p_name}}">
                   </div>
                   <div class="form-group">
                     <label>Product Details</label>
-                    <input type="text" name="productdetails" class="form-control" id="" placeholder="Enter Product Details">
+                    <input type="text" name="productdetails" class="form-control" id="" placeholder="Enter Product Details" value="{{product_array.p_details}}" >
                   </div>
                    <div class="form-group">
                     <label>Product Price</label>
-                    <input type="Number" name="productprice" class="form-control" id="" placeholder="Enter Product Price">
+                    <input type="Number" name="productprice" class="form-control" id="" placeholder="Enter Product Price" value="{{product_array.p_price}}">
                   </div>
                    <div class="form-group">
                     <label>Product Image</label>
-                    <input type="file" name="productimg" class="form-control" id="" placeholder=" Product Image">
+                    <input type="file" name="productimg" class="form-control" id="" placeholder=" Product Image" value="{{product_array.p_img}}">
                   </div>
                    <div class="form-group">
                     <label>Product Quntity</label>
-                    <input type="number" name="productqty" class="form-control" id="" placeholder="Enter Product Quntity">
+                    <input type="number" name="productqty" class="form-control" id="" placeholder="Enter Product Quntity" value="{{product_array.p_qty}}">
                   </div>
                    <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Select SubCategory</label>
                     <select name="_subcategory">
-                      {{#each mydata}}
+                      {{#each subcategory_array}}
                             <option value="{{_id}}">{{s_name}}</option>
                        {{/each}}
                     </select>

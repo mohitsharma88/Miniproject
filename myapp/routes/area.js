@@ -130,18 +130,10 @@ router.get('/edit/:id', function(req, res) {
       } else {
           console.log(db_area_array);
 
-          res.render('area/edit', { mydata: db_area_array });
+          res.render('area/editarea', { mydata: db_area_array });
       }
   });
 });
-
-
-
-
-
-
-
-
 //Update Record Using Post Method
 router.post('/edit/:id', function(req, res) {
 

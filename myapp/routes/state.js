@@ -105,29 +105,22 @@ router.get('/edit/:id', function(req, res) {
   });
 });
 
-
-
-
-
-
-
-
 //Update Record Using Post Method
 router.post('/edit/:id', function(req, res) {
 
   console.log("Edit ID is"+ req.params.id);
 
   const mybodydata = {
-    c_name: req.body.c_name 
+    s_name: req.body.addstate
   }
 
-  CountryModel.findByIdAndUpdate(req.params.id, mybodydata, function(err) {
+  StateModel.findByIdAndUpdate(req.params.id, mybodydata, function(err) {
       if (err) {
-          console.log("Error in Record Update");
-          res.redirect('/state/displaystate');
+          console.log("Error in Record Update"+err);
+          // res.redirect('/state/edit');
       } else {
-        
-          res.redirect('/state/displaystate');
+        console.log("Edit Successfull");
+          res.redirect('/admin/state/displaystate');
       }
   });
 });

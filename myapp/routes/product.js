@@ -4,7 +4,7 @@ var router = express.Router();
 //Call User Datab
 var ProductModel = require('../schema/product');
 var SubCategoryModel = require('../schema/subcategory')
-//  var CategoryModel = require('../schema/category');
+
 var fileUpload = require('express-fileupload');
 
 /* GET home page. */
@@ -88,42 +88,74 @@ data.save(function(err) {
    
   });
 
+  router.get('/edit/:id', function(req, res) {
 
-// //Get Single User By ID
-// router.get('/show/:id', function(req, res) {
-//   console.log(req.params.id);
+    console.log(req.params.id);
+    
+    ProductModel.findById(req.params.id, function(err, db_product_array) {
+        if (err) {
+            console.log("Edit Fetch Error " + err);
+        } else {
+          SubCategoryModel.find({},function(err , db_subcategory_array){
+            if(err){
+              console.log(err);
+            }else{
+              console.log(db_product_array);
+  
+              res.render('product/editproduct', {product_array: db_product_array,subcategory_array : db_subcategory_array});
+          
+            }
+          })
+        }
+    });
+  });
+  
+  //Update Record Using Post Method
+  router.post('/edit/:id', function(req, res) {
+  
+    var myfile = req.files.productimg;
+    var myfilename = req.files.productimg.name;
 
-//   SubCategoryModel.findById(req.params.id, function(err, db_subcategory_array) {
+    myfile.mv('public/productphoto/'+myfilename, function(err) {
+        if (err)
+        throw err;
+        //res.send('File uploaded!');
+        });
+
+    console.log("Edit ID is"+ req.params.id);
+  
+    const mybodydata = {
+      p_name: req.body.addproduct,
+      p_details: req.body.productdetails,
+      p_price: req.body.productprice,
+      p_img: myfilename,
+      p_qty: req.body.productqty,
+      _subcategory: req.body._subcategory
+    }
+  
+    ProductModel.findByIdAndUpdate(req.params.id, mybodydata, function(err,db_product_array) {
+        if (err) {
+            console.log("Error in Record Update");
+          //   res.redirect('/subcategory/display');zz
+        } else {
+          console.log("Successfully edit"+db_product_array)
+            res.redirect('/admin/product/displayproduct');
+        }
+    });
+  });
 
 
-//       if (err) {
-//           console.log("Error in Single Record Fetch" + err);
-//       } else {
-
-        
-//           console.log(db_subcategory_array);
-
-//           res.render('subcategory/single-subcategory-record', { subcategory_array: db_subcategory_array });
-//       }
-//   });
-// });
-
-
-
-// //Delete User By ID
-// router.get('/delete/:id', function(req, res) {
-//   SubCategoryModel.findByIdAndDelete(req.params.id, function(err, project) {
-//       if (err) {
-//         console.log("Error in Record Delete " + err);
-//           res.redirect('/admin/subcategory/displaysubcategory');
-//       } else {
-//         console.log(" Record Deleted ");
-//           res.redirect('/admin/subcategory/displaysubcategory');
-//       }
-//   });
-// });
-
-
+router.get('/delete-record/:id', function (req, res, next) {
+  ProductModel.findByIdAndDelete(req.params.id, function (err, product_array) {
+    if (err) {
+      console.log("Error in Record Delete " + err);
+      res.redirect('/admin/product/displayproduct');
+    } else {
+      console.log(" Record Deleted "+product_array);
+      res.redirect('/admin/product/displayproduct');
+    }
+  });
+});
 
 // //Get Single User for Edit Record
 // router.get('/edit/:id', function(req, res) {
