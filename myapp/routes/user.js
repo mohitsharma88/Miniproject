@@ -140,48 +140,5 @@ router.post('/useredit/:id', function (req, res) {
 
   
 
-// router.get('/delete/:id',function(req, res, next){
-//   UserModel.findByIdAndDelete(req.params.id,function(err, data){
-//     if(err){
-//       console.log('Error in delete'+err);
-//     }else{
-//       console.log('Successfully delete'+data);
-//       res.redirect('/admin/account//userdisplay');
-//     }
-//   })
-// })
-// router.get('/edit/:id',function(req,res,next){
-//   var editid = req.params.id;
-//   UserModel.findById(editid,function(err,data){
-    
-//     if(err){
-//       console.log("Error in Edit" + err);
-//     }else{
-//       console.log("Edit Record" + data);
-//       res.render('edit',{editdata:data});
-//     }
-//   }).lean();
-
-// });
-// //Update
-// router.post('/edit/:id',function(req,res,next){
-//   var editid = req.params.id;
-  
-//   const mybodydata = {
-//     user_name : req.body.txt1,
-//     user_mobile : req.body.txt2
-//   }
-
-//   UserModel.findByIdAndUpdate(editid,mybodydata,function(err,data){
-    
-//     if(err){
-//       console.log("Error in Update" + err);
-//     }else{
-//       console.log("Record Update");
-//       res.redirect('/display');
-//     }
-//   })
-
-// });
 
 module.exports = router;

@@ -1,8 +1,7 @@
-var express = require('express');
+const express = require('express');
 var router = express.Router();
+const {check, validationResult} = require('express-validator/check');
 var SignupModel=require("../schema/signup_table");
-/* GET home page. */
-// var session=require(express-session);
 var fileUpload = require('express-fileupload');
 
 
@@ -15,71 +14,167 @@ router.get('/signup', function(req, res, next) {
   res.render('admin/account/signup');
 });
 
-router.post('/signup', function(req, res, next) {
-    var myfile = req.files.file;
-    var myfilename = req.files.file.name;
-    
-    myfile.mv('public/adminphoto/'+myfilename, function(err) {
-    if (err)
-    throw err;
-    //res.send('File uploaded!');
-    });
-    const mybodydata = {
-      email: req.body.email,
-      password: req.body.password,
-      file:myfilename
-    }
-    var data = SignupModel(mybodydata);
-  
-    data.save(function(err){
-      if(err){
-        console.log("Error in Add Record" + err);
-      }else{
-        console.log("Record Added");
-        res.redirect('/admin/signup');
-      }
-    })
-  
-  });
-
+router.post('/signup', 
+  [ 
+    check('email')
+      .isEmail().withMessage('Please type Proper Email Format')
+      .custom((value, {req}) => 
+      {
+        return new Promise((resolve, reject) => 
+        {
+          SignupModel.findOne({email:req.body.email}, function(err, user)
+          {
+            if(err) 
+            {
+              reject(new Error('Server Error'))
+            }
+            if(Boolean(user))
+            {
+              reject(new Error('E-mail already in use'))
+            }
+            resolve(true)
+          });
+        })
+      }) ,
+    check('password')
+      .matches('(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$')
+      .withMessage(' password must be 1 character 1 Uppercase character 1 Lowercase character its must be 8 character.')                     
+  ],
+ function(req, res, next)
+ {
+   console.log(req.body)
+   const errors = validationResult(req).array();
+   console.log(errors);
+   if (errors.length > 0 )
+   { 
+       const nameError = errors.find(function (val)
+         {
+             if (val.param == "name")
+             {
+                 return val
+             }
+       })
+       const emailError = errors.find(function (val) 
+       {
+           if (val.param == "email")
+           {
+               return val
+           }
+       })
+       const passwordError = errors.find(function (val) 
+       {
+           if (val.param == "password") 
+           {
+               return val
+           }
+       })
+       const postData = req.body;  
+       res.render("admin/account/signup", {nameError : nameError , emailError : emailError ,passwordError : passwordError ,data : postData.name,email: postData.email, pass : postData.password})
+   } 
+   else
+   {
+     var myfile = req.files.file;
+     var myfilename = req.files.file.name;
+     
+     myfile.mv('public/adminphoto/'+myfilename, function(err)
+     {
+       if (err)
+       throw err;
+       //res.send('File uploaded!');
+     });
+     const mybodydata = 
+     {
+       email: req.body.email,
+       password: req.body.password,
+       file:myfilename
+     }
+     var data = SignupModel(mybodydata);
+     data.save(function(err)
+     {
+       if(err)
+       {
+         console.log("Error in Add Record" + err);
+       }
+       else
+       {
+         console.log("Record Added");
+         res.redirect('/admin/signup');
+       }
+     })
+   }
+ });
 
 router.get('/login', function(req, res, next) {
   res.render('admin/account/login');
 });
 
-router.post('/login', function (req, res, next) {
+router.post('/login', [
+  check('Login_email').
+    isEmail().withMessage('Please type Proper Email Foemat')  ,
+  check('Login_password')
+    .matches('(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$')
+    .withMessage(' password must be 1 character 1 Uppercase character 1 Lowercase character its must be 8 character.') 
+],
+function (req, res, next) 
+{
+  console.log(req.body)
+            const errors = validationResult(req).array();
+            console.log(errors);
+            if (errors.length > 0 )
+            { 
+                const loginemailError = errors.find(function (val) 
+                {
+                    if (val.param == "Login_email")
+                    {
+                        return val
+                    }
+                })
+                const loginpasswordError = errors.find(function (val) 
+                {
+                    if (val.param == "Login_password") 
+                    {
+                        return val
+                    }     
+              })
+              const postData = req.body; 
+              console.log(postData.Login_email) 
+              res.render("admin/account/login", { loginemailError : loginemailError ,loginpasswordError : loginpasswordError ,email: postData.Login_email, pass : postData.Login_password})
+          } 
+          else
+          {
 
-  var email = req.body.Login_email;
-  var password = req.body.Login_password;
+            var email = req.body.Login_email;
+            var password = req.body.Login_password;
 
-  console.log(req.body);
-  SignupModel.findOne({ "email": email }, function (err, db_admin_array) {
+            console.log(req.body.Login_email);
+            SignupModel.findOne({ "email": email }, function (err, db_admin_array) {
 
-    console.log("Find One " + db_admin_array);
+              console.log("Find One " + db_admin_array);
 
-    if (db_admin_array) {
-      var db_email = db_admin_array.email;
-      var db_password = db_admin_array.password;
+              if (db_admin_array) {
+                var db_email = db_admin_array.email;
+                var db_password = db_admin_array.password;
 
-    }
+              }
 
-    console.log("db_admin_array.email " + db_email);
-    console.log("db_admin_array.password " + db_password);
+              console.log("db_admin_array.email " + db_email);
+              console.log("db_admin_array.password " + db_password);
 
-    if (db_email == null ) {
-      console.log("If");
-      res.end("Email not Found");
-    }
-    else if ( db_email == email && db_password == password ) {
-      // console.log("db_admin_array.email " + email);
-      req.session.email = db_email;
-      res.render('admin/account/home');
-    }
-    else {
-      console.log("Credentials wrong");
-      res.end("Login invalid");
-    }
-  });
+              if (db_email == null ) {
+                console.log("If");
+                res.end("Email not Found");
+              }
+              else if ( db_email == email && db_password == password ) {
+                // console.log("db_admin_array.email " + email);
+                req.session.email = db_email;
+                res.render('admin/account/home');
+              }
+              else {
+                console.log("Credentials wrong");
+                res.end("Login invalid");
+              }
+        });
+}
 });
 
 router.get('/afterlogin', function(req, res, next) {
@@ -156,8 +251,7 @@ async function main(){
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 
   res.end("Password Sent on your Email");
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-  // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+  
 }
 // 
 
